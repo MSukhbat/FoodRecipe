@@ -5,9 +5,6 @@ import Gogle from '@/icons/other/google-icon';
 
 const SignUp: React.FC = (props) => {
   const [isClickedLog, setIsClickedLog] = useState(false);
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
   const handleClick = (): void => {
     setIsClickedLog(true);
   };
@@ -38,20 +35,6 @@ const SignUp: React.FC = (props) => {
         <View style={{ width: 380, height: 400, display: 'flex', justifyContent: 'space-between' }}>
           <View>
             <Text style={{ height: 30 }}>Name</Text>
-            <TextInput
-              style={{
-                height: 60,
-                width: 350,
-                borderWidth: 1,
-                padding: 10,
-                borderRadius: 10,
-                backgroundColor: 'white',
-                borderColor: '#D9D9D9',
-              }}
-              value={name}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email address"
-            />
           </View>
           <View>
             <Text style={{ height: 30 }}>Email</Text>
