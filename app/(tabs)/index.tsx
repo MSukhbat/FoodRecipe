@@ -1,8 +1,11 @@
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable, Image } from 'react-native';
+
 import Minute from '@/icons/other/minute-icon';
+
 import Filter from '@/icons/other/filter-icon';
+
 import Detail from '@/app/recipe/[id]';
 
 export default function TabOneScreen(): React.ReactNode {

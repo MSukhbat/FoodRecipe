@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
+
 import SignUp from './SignUp';
+
 import Gogle from '@/icons/other/google-icon';
 import { useWelcomed } from '@/service/useWelcomed';
 

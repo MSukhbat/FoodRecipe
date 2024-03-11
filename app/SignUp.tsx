@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
+
 import Login from './Login';
+
 import Gogle from '@/icons/other/google-icon';
 
 const SignUp: React.FC = (props) => {

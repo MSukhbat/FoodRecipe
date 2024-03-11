@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { View, Text, ImageBackground, Pressable, Image } from 'react-native';
+
 import LogSign from './Login';
 
 const Welcome: React.FC = (props) => {

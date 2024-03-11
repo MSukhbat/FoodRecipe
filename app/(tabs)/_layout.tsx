@@ -13,21 +13,21 @@ const TabLayout: React.FC = () => {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: '',
           tabBarIcon: ({ focused }) => <HomeIcon />,
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
-          title: 'List',
+          title: '',
           tabBarIcon: ({}) => <ListIcon />,
         }}
       />
       <Tabs.Screen
         name="add"
         options={{
-          title: 'Add',
+          title: '',
           tabBarIcon: ({}) => (
             <View>
               <View style={{ position: 'relative', top: 0 }}>
@@ -50,14 +50,14 @@ const TabLayout: React.FC = () => {
       <Tabs.Screen
         name="three"
         options={{
-          title: 'search',
+          title: '',
           tabBarIcon: ({}) => <Search />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'profile',
+          title: '',
           tabBarIcon: ({}) => <Profile />,
         }}
       />
