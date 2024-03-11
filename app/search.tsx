@@ -1,5 +1,6 @@
-import Filter from '@/icons/other/filter-icon';
 import { View, Text, StyleSheet, Image, Pressable, TextInput } from 'react-native';
+
+import Filter from '@/icons/other/filter-icon';
 
 const SearchScreen: React.FC = () => {
   return (

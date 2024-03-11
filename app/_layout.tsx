@@ -1,5 +1,7 @@
 import { Stack } from 'expo-router';
+
 import Welcome from './welcome';
+
 import { useWelcomed } from '@/service/useWelcomed';
 
 const RootLayoutNav: React.FC = () => {

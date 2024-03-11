@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, View, Pressable, ImageBackground } from 'react-native';
+
 import Clock from '@/icons/other/clock-icon';
 import Icon from '@/icons/other/saved-icon';
 
