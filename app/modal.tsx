@@ -1,38 +1,57 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, ImageBackground } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import recipes from './data/recipeData';
 
 const ModalScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View
         style={{
-          width: 380,
+          width: 390,
           height: 710,
           display: 'flex',
           flexDirection: 'column',
         }}>
-        <Pressable
-          style={{
-            position: 'relative',
-          }}>
-          <Image
-            width={180}
-            height={150}
-            style={{
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-            }}
-            source={{
-              uri: 'https://hips.hearstapps.com/hmg-prod/images/classic-cheese-pizza-recipe-2-64429a0cb408b.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*',
-            }}
-          />
+        <FlatList
+          // style={{ margin: 5, gap: 10, width: '100%' }}
+          numColumns={2}
+          data={recipes}
+          renderItem={({ item: recipe }) => (
+            <View style={{ width: 200, display: 'flex', paddingBottom: 20 }}>
+              <Pressable
+                style={{
+                  position: 'relative',
+                }}>
+                <ImageBackground
+                  style={{
+                    width: 180,
+                    height: 200,
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20,
+                    borderBottomLeftRadius: 20,
+                    borderBottomRightRadius: 20,
+                  }}
+                  source={{
+                    uri: `${recipe.imageUrl}`,
+                  }}>
+                  <LinearGradient
+                    colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.2)', 'transparent']}
+                    style={{ width: '100%', height: '100%', position: 'absolute' }}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 0, y: 0 }}
+                  />
 
-          <View style={{ position: 'absolute', bottom: 8, left: 16 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>Food name</Text>
-            <Text style={{ color: '#DEDEDE' }}>By Christopper</Text>
-          </View>
-        </Pressable>
+                  <View style={{ position: 'absolute', bottom: 8, left: 16 }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 15, color: 'white', width: 100 }}>
+                      {recipe.name}
+                    </Text>
+                    <Text style={{ color: '#DEDEDE' }}>By Christopper</Text>
+                  </View>
+                </ImageBackground>
+              </Pressable>
+            </View>
+          )}
+        />
       </View>
     </View>
   );

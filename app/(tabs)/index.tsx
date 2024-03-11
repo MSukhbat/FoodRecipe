@@ -1,12 +1,13 @@
 import { Link } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, Image, FlatList } from 'react-native';
 
-import Minute from '@/icons/other/minute-icon';
-
-import Filter from '@/icons/other/filter-icon';
+import recipes from '../data/recipeData';
 
 import Detail from '@/app/recipe/[id]';
+import Filter from '@/icons/other/filter-icon';
+import Idk from '@/icons/other/idk-icon';
+import Minute from '@/icons/other/minute-icon';
 
 export default function TabOneScreen(): React.ReactNode {
   const [detail, setDetail] = useState(false);
@@ -92,7 +93,6 @@ export default function TabOneScreen(): React.ReactNode {
             </View>
           </View>
         </Link>
-
         {/* {Scrolls} */}
         <View style={{ width: 380, height: 70 }}>
           <Pressable style={styles.button}>
@@ -124,56 +124,73 @@ export default function TabOneScreen(): React.ReactNode {
           </Link>
         </View>
         {/* {Recipes} */}
-        {/* <Link href={`/recipe/${}`}> */}
-        <Pressable onPress={detailHandler}>
-          <View
-            style={{
-              width: 210,
-              height: 320,
-              borderColor: 'black',
-              borderRadius: 8,
-              backgroundColor: '#ECECEC',
-            }}>
-            <Image
-              height={120}
-              style={{
-                borderTopLeftRadius: 8,
-                borderTopRightRadius: 8,
-              }}
-              source={{
-                uri: 'https://hips.hearstapps.com/hmg-prod/images/classic-cheese-pizza-recipe-2-64429a0cb408b.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*',
-              }}
-            />
-            <View
-              style={{
-                width: 200,
-                height: 200,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+        <FlatList
+          data={recipes}
+          renderItem={({ item: recipe }) => (
+            <Pressable onPress={detailHandler}>
               <View
                 style={{
-                  width: 180,
-                  height: 180,
+                  width: 210,
+                  height: 290,
+                  borderColor: 'black',
+                  borderRadius: 8,
+                  backgroundColor: '#ECECEC',
                 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Food name</Text>
+                <Image
+                  height={120}
+                  style={{
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
+                  source={{
+                    uri: `${recipe.imageUrl}`,
+                  }}
+                />
                 <View
                   style={{
-                    width: 130,
-                    height: 30,
+                    width: 200,
+                    height: 200,
                     display: 'flex',
-                    flexDirection: 'row',
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
                   }}>
-                  <Minute />
-                  <Text style={{ color: '#575757' }}>XX-XX minutes</Text>
+                  <View
+                    style={{
+                      width: 180,
+                      height: 180,
+                    }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{recipe.name}</Text>
+                    <View
+                      style={{
+                        width: 130,
+                        height: 65,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Minute />
+                      <Text style={{ color: '#575757' }}>{recipe.cookTime} minutes</Text>
+                    </View>
+                    <View
+                      style={{
+                        width: 130,
+                        height: 30,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Idk />
+                      <Text style={{ color: '#575757' }}>{recipe.easy}</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-          </View>
-        </Pressable>
+            </Pressable>
+          )}
+        />
+        {/* <Link href={`/recipe/${}`}> */}
         {/* </Link> */}
       </View>
     </View>
