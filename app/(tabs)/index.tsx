@@ -1,22 +1,23 @@
 import { Link } from 'expo-router';
-import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, Image, FlatList } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Image, FlatList, TouchableOpacity } from 'react-native';
 
 import recipes from '../data/recipeData';
 
-import Detail from '@/app/recipe/[id]';
 import Filter from '@/icons/other/filter-icon';
 import Idk from '@/icons/other/idk-icon';
 import Minute from '@/icons/other/minute-icon';
 
 export default function TabOneScreen(): React.ReactNode {
-  const [detail, setDetail] = useState(false);
-  const detailHandler = (): void => {
-    setDetail(true);
-  };
-  if (detail) {
-    return <Detail />;
-  }
+  const [data, setData] = useState();
+  useEffect(() => {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
+      .then((res) => res.json())
+      .then(({ meals }) => {
+        setData(meals);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View
@@ -65,6 +66,7 @@ export default function TabOneScreen(): React.ReactNode {
         <Link href="/search">
           <View
             style={{
+              width: 380,
               height: 90,
               display: 'flex',
               flexDirection: 'row',
@@ -74,7 +76,7 @@ export default function TabOneScreen(): React.ReactNode {
             <TextInput style={styles.input} placeholder="Search recipe" keyboardType="numeric" />
             <View
               style={{
-                width: 85,
+                width: '25%',
                 height: 40,
                 display: 'flex',
                 justifyContent: 'center',
@@ -95,9 +97,15 @@ export default function TabOneScreen(): React.ReactNode {
         </Link>
         {/* {Scrolls} */}
         <View style={{ width: 380, height: 70 }}>
-          <Pressable style={styles.button}>
-            <Text style={styles.text}>Options</Text>
-          </Pressable>
+          <FlatList
+            horizontal={true}
+            data={data}
+            renderItem={({ item: data }) => (
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.text}>{data.strCategory}</Text>
+              </TouchableOpacity>
+            )}
+          />
         </View>
         {/* {Popular recipies} */}
         <View
@@ -126,68 +134,71 @@ export default function TabOneScreen(): React.ReactNode {
         {/* {Recipes} */}
         <FlatList
           data={recipes}
+          horizontal={true}
           renderItem={({ item: recipe }) => (
-            <Pressable onPress={detailHandler}>
-              <View
-                style={{
-                  width: 210,
-                  height: 290,
-                  borderColor: 'black',
-                  borderRadius: 8,
-                  backgroundColor: '#ECECEC',
-                }}>
-                <Image
-                  height={120}
-                  style={{
-                    borderTopLeftRadius: 8,
-                    borderTopRightRadius: 8,
-                  }}
-                  source={{
-                    uri: `${recipe.imageUrl}`,
-                  }}
-                />
+            <View style={{ margin: 5 }}>
+              <Link href={`/recipe/${recipe.id}`}>
                 <View
                   style={{
-                    width: 200,
-                    height: 200,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    width: 210,
+                    height: 290,
+                    borderColor: 'black',
+                    borderRadius: 8,
+                    backgroundColor: '#ECECEC',
                   }}>
+                  <Image
+                    height={120}
+                    style={{
+                      borderTopLeftRadius: 8,
+                      borderTopRightRadius: 8,
+                    }}
+                    source={{
+                      uri: `${recipe.imageUrl}`,
+                    }}
+                  />
                   <View
                     style={{
-                      width: 180,
-                      height: 180,
+                      width: 200,
+                      height: 200,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{recipe.name}</Text>
                     <View
                       style={{
-                        width: 130,
-                        height: 65,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
+                        width: 190,
+                        height: 180,
                       }}>
-                      <Minute />
-                      <Text style={{ color: '#575757' }}>{recipe.cookTime} minutes</Text>
-                    </View>
-                    <View
-                      style={{
-                        width: 130,
-                        height: 30,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Idk />
-                      <Text style={{ color: '#575757' }}>{recipe.easy}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{recipe.name}</Text>
+                      <View
+                        style={{
+                          width: 120,
+                          height: 60,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 20,
+                        }}>
+                        <Minute />
+                        <Text style={{ color: '#575757' }}>{recipe.cookTime} minutes</Text>
+                      </View>
+                      <View
+                        style={{
+                          width: 85,
+                          height: 30,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 20,
+                        }}>
+                        <Idk />
+                        <Text style={{ color: '#575757' }}>{recipe.easy}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </Pressable>
+              </Link>
+            </View>
           )}
         />
         {/* <Link href={`/recipe/${}`}> */}
@@ -218,7 +229,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: '75%',
+    width: 300,
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
@@ -227,10 +238,11 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
+    width: 150,
     height: 40,
     borderRadius: 15,
     backgroundColor: 'white',
+    margin: 5,
   },
   text: {
     fontSize: 16,

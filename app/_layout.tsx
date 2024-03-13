@@ -17,7 +17,7 @@ const RootLayoutNav: React.FC = () => {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="modal" />
       <Stack.Screen name="search" />
-      <Stack.Screen name="recipe/[id]" />
+      <Stack.Screen name="recipe/[id]" options={{ headerShown: false }} />
     </Stack>
   );
 };

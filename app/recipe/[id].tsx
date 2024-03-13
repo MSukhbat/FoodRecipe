@@ -1,12 +1,28 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Link } from 'expo-router';
-import { View, Text, ImageBackground, Pressable, StyleSheet } from 'react-native';
-import Arrow from '@/icons/left-arrow';
+import { Link, useGlobalSearchParams } from 'expo-router';
+import { useState } from 'react';
+import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+
 import Menu from '../PopupMenu/popup';
+import recipes from '../data/recipeData';
+
+import Arrow from '@/icons/left-arrow';
 import Clock from '@/icons/other/clock-icon';
 import Icon from '@/icons/other/saved-icon';
 
 const Page: React.FC = () => {
+  const { id } = useGlobalSearchParams();
+  const [tab, setTab] = useState<'ingredients' | 'process'>('ingredients');
+  const data = recipes.filter((e) => e.id === id);
+  const object = data[0];
+  const ingredients = object.ingredients;
+  const instructions = object.instructions;
+  const handleClick1 = (): void => {
+    setTab('ingredients');
+  };
+  const handleClick2 = (): void => {
+    setTab('process');
+  };
   return (
     <View style={styles.container}>
       <View
@@ -37,13 +53,9 @@ const Page: React.FC = () => {
             position: 'relative',
             width: 380,
             height: 200,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
           }}
           source={{
-            uri: 'https://hips.hearstapps.com/hmg-prod/images/classic-cheese-pizza-recipe-2-64429a0cb408b.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*',
+            uri: `${object.imageUrl}`,
           }}>
           <LinearGradient
             colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.2)', 'transparent']}
@@ -66,7 +78,7 @@ const Page: React.FC = () => {
             <View>
               <Clock />
             </View>
-            <Text style={{ color: '#D9D9D9' }}>20min</Text>
+            <Text style={{ color: '#D9D9D9' }}>{object.cookTime + 'min'}</Text>
             <View
               style={{
                 borderColor: 'none',
@@ -88,10 +100,10 @@ const Page: React.FC = () => {
           <Text
             style={{
               fontWeight: 'bold',
-              fontSize: 17,
-              width: 250,
+              fontSize: 25,
+              width: 400,
             }}>
-            Spicy chicken burger with French fries
+            {object.name}
           </Text>
         </View>
         <View
@@ -101,37 +113,101 @@ const Page: React.FC = () => {
             width: 380,
             justifyContent: 'space-between',
           }}>
-          <Pressable
+          <TouchableOpacity
+            onPress={handleClick1}
             style={{
               width: 185,
               height: 50,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
+              borderRadius: 10,
               backgroundColor: '#129575',
             }}>
             <Text style={{ color: '#FFFFFF' }}> ingredient</Text>
-          </Pressable>
-          <Pressable
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleClick2}
             style={{
               width: 185,
               height: 50,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
+              borderRadius: 10,
               backgroundColor: '#129575',
             }}>
             <Text style={{ color: '#FFFFFF' }}> Process</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
+        {tab === 'ingredients' && (
+          <View style={{ marginTop: 20 }}>
+            <FlatList
+              data={ingredients}
+              renderItem={({ item: ingredient }) => (
+                <View
+                  style={{
+                    width: 380,
+                    height: 80,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                    backgroundColor: '#D9D9D9',
+                    marginVertical: 7,
+                  }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: 370,
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={{ color: '#121212', fontSize: 18, fontWeight: 'bold' }}>
+                      {ingredient.name}
+                    </Text>
+                    <Text style={{ color: '#A9A9A9' }}>
+                      {ingredient.quantity}
+                      {ingredient.unit}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
+        )}
+        {tab === 'process' && (
+          <View style={{ marginTop: 20 }}>
+            <FlatList
+              data={instructions}
+              renderItem={({ item: instruction }) => (
+                <View
+                  style={{
+                    width: 380,
+                    display: 'flex',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                    backgroundColor: '#D9D9D9',
+                    marginVertical: 7,
+                  }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      width: 370,
+                    }}>
+                    <Text
+                      style={{ color: '#121212', fontSize: 18, fontWeight: 'bold', height: 40 }}>
+                      {'Step' + ' ' + instruction.number}
+                    </Text>
+                    <Text style={{ color: '#A9A9A9', fontSize: 18 }}>
+                      {instruction.instruction}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
