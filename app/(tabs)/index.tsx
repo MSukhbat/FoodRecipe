@@ -1,14 +1,15 @@
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, FlatList, TouchableOpacity } from 'react-native';
 
 import recipes from '../data/recipeData';
 
 import Filter from '@/icons/other/filter-icon';
-import Idk from '@/icons/other/idk-icon';
-import Minute from '@/icons/other/minute-icon';
+// import Idk from '@/icons/other/idk-icon';
+// import Minute from '@/icons/other/minute-icon';
 
 export default function TabOneScreen(): React.ReactNode {
+  const router = useRouter();
   const [data, setData] = useState();
   useEffect(() => {
     fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
@@ -101,7 +102,9 @@ export default function TabOneScreen(): React.ReactNode {
             horizontal={true}
             data={data}
             renderItem={({ item: data }) => (
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => router.push(`/category/${data.strCategory}`)}>
                 <Text style={styles.text}>{data.strCategory}</Text>
               </TouchableOpacity>
             )}
@@ -116,8 +119,8 @@ export default function TabOneScreen(): React.ReactNode {
             height: 60,
             justifyContent: 'space-between',
           }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 23 }}>Popular now</Text>
-          <Link href="/modal">
+          <Text style={{ fontWeight: 'bold', fontSize: 23 }}>Recipies</Text>
+          <Link href="/all">
             <Text
               style={{
                 width: 65,
@@ -134,23 +137,23 @@ export default function TabOneScreen(): React.ReactNode {
         {/* {Recipes} */}
         <FlatList
           data={recipes}
-          horizontal={true}
           renderItem={({ item: recipe }) => (
-            <View style={{ margin: 5 }}>
+            <View>
               <Link href={`/recipe/${recipe.id}`}>
                 <View
                   style={{
-                    width: 210,
-                    height: 290,
-                    borderColor: 'black',
-                    borderRadius: 8,
-                    backgroundColor: '#ECECEC',
+                    width: 380,
+                    height: 300,
+
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}>
                   <Image
-                    height={120}
                     style={{
-                      borderTopLeftRadius: 8,
-                      borderTopRightRadius: 8,
+                      width: 380,
+                      height: 200,
+                      borderTopLeftRadius: 20,
+                      borderTopRightRadius: 20,
                     }}
                     source={{
                       uri: `${recipe.imageUrl}`,
@@ -158,42 +161,19 @@ export default function TabOneScreen(): React.ReactNode {
                   />
                   <View
                     style={{
-                      width: 200,
-                      height: 200,
                       display: 'flex',
+                      backgroundColor: '#D9D9D9',
+                      width: 380,
+                      height: 80,
                       justifyContent: 'center',
-                      alignItems: 'center',
+                      alignContent: 'center',
+                      borderBottomLeftRadius: 20,
+                      borderBottomRightRadius: 20,
                     }}>
-                    <View
-                      style={{
-                        width: 190,
-                        height: 180,
-                      }}>
-                      <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{recipe.name}</Text>
-                      <View
-                        style={{
-                          width: 120,
-                          height: 60,
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 20,
-                        }}>
-                        <Minute />
-                        <Text style={{ color: '#575757' }}>{recipe.cookTime} minutes</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: 85,
-                          height: 30,
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 20,
-                        }}>
-                        <Idk />
-                        <Text style={{ color: '#575757' }}>{recipe.easy}</Text>
-                      </View>
+                    <View>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#484848' }}>
+                        {recipe.name}
+                      </Text>
                     </View>
                   </View>
                 </View>

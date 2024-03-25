@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { View, Text, ImageBackground, Pressable, Image } from 'react-native';
 
-import LogSign from './Login';
+import LogSign from './SignUp';
 
 const Welcome: React.FC = (props) => {
   const [isClicked, setIsClicked] = useState(false);
