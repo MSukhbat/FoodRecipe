@@ -15,9 +15,10 @@ const RootLayoutNav: React.FC = () => {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" />
+      <Stack.Screen name="all" />
       <Stack.Screen name="search" />
-      <Stack.Screen name="recipe/[id]" />
+      <Stack.Screen name="category/[id]" />
+      <Stack.Screen name="recipe/[id]" options={{ headerShown: false }} />
     </Stack>
   );
 };

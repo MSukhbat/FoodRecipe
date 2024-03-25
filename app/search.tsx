@@ -71,7 +71,6 @@ const SearchScreen: React.FC = () => {
 
             <View style={{ position: 'absolute', bottom: 8, left: 16 }}>
               <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>Food name</Text>
-              <Text style={{ color: '#DEDEDE' }}>By Christopper</Text>
             </View>
           </Pressable>
         </View>

@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, Pressable, FlatList, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, StyleSheet, Pressable, FlatList, ImageBackground } from 'react-native';
+
 import recipes from './data/recipeData';
 
 const ModalScreen: React.FC = () => {
@@ -45,7 +46,7 @@ const ModalScreen: React.FC = () => {
                     <Text style={{ fontWeight: 'bold', fontSize: 15, color: 'white', width: 100 }}>
                       {recipe.name}
                     </Text>
-                    <Text style={{ color: '#DEDEDE' }}>By Christopper</Text>
+                    {/* <Text style={{ color: '#DEDEDE' }}>By Christopper</Text> */}
                   </View>
                 </ImageBackground>
               </Pressable>
