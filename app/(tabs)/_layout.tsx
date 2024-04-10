@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { View } from 'react-native';
+
 import Add from '@/icons/add-icon';
-import Back from '@/icons/back-icon';
 import HomeIcon from '@/icons/home-icon';
 import ListIcon from '@/icons/list-icon';
 import Profile from '@/icons/profile-icon';
@@ -21,6 +21,7 @@ const TabLayout: React.FC = () => {
         name="two"
         options={{
           title: '',
+          // eslint-disable-next-line no-empty-pattern
           tabBarIcon: ({}) => <ListIcon />,
         }}
       />
@@ -28,12 +29,13 @@ const TabLayout: React.FC = () => {
         name="add"
         options={{
           title: '',
+          // eslint-disable-next-line no-empty-pattern
           tabBarIcon: ({}) => (
             <View>
-              <View style={{ position: 'relative', top: 0 }}>
+              {/* <View style={{ position: 'relative', top: 0 }}>
                 <Back />
-              </View>
-              <View style={{ position: 'absolute', right: 31 }}>
+              </View> */}
+              <View style={{}}>
                 <Add />
               </View>
             </View>
@@ -51,6 +53,7 @@ const TabLayout: React.FC = () => {
         name="three"
         options={{
           title: '',
+          // eslint-disable-next-line no-empty-pattern
           tabBarIcon: ({}) => <Search />,
         }}
       />
@@ -58,6 +61,7 @@ const TabLayout: React.FC = () => {
         name="profile"
         options={{
           title: '',
+          // eslint-disable-next-line no-empty-pattern
           tabBarIcon: ({}) => <Profile />,
         }}
       />

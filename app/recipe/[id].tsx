@@ -1,28 +1,82 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useGlobalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 
 import Menu from '../PopupMenu/popup';
-import recipes from '../data/recipeData';
 
+import { useGetRecipeQuery } from '@/graphql/generated';
 import Arrow from '@/icons/left-arrow';
-import Clock from '@/icons/other/clock-icon';
 import Icon from '@/icons/other/saved-icon';
 
 const Page: React.FC = () => {
   const { id } = useGlobalSearchParams();
+  const { data, loading, error } = useGetRecipeQuery({ variables: { getRecipeId: `${id}` } });
   const [tab, setTab] = useState<'ingredients' | 'process'>('ingredients');
-  const data = recipes.filter((e) => e.id === id);
-  const object = data[0];
-  const ingredients = object.ingredients;
-  const instructions = object.instructions;
+  // useEffect(() => {
+  //   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+  //     .then((res) => res.json())
+  //     .then(({ meals }) => {
+  //       const newObject = meals.map((meal) => {
+  //         const ingredients = [];
+  //         const measurements = [];
+  //         for (let i = 1; i <= 20; i++) {
+  //           const ingredient: string = meal[`strIngredient${i}`];
+  //           const measurement: string = meal[`strMeasure${i}`];
+  //           if (ingredient !== '') {
+  //             ingredients.push(ingredient);
+  //           }
+  //           if (measurement !== '') {
+  //             measurements.push(measurement);
+  //           }
+  //         }
+  //         return {
+  //           ...meal,
+  //           ingredients,
+  //           measurements,
+  //         };
+  //       });
+  //       setObject(newObject[0]);
+  //     });
+  // }, []);
+
+  // const data = recipes.filter((e) => e.id === id);
+  // const object = data[0];
+
   const handleClick1 = (): void => {
     setTab('ingredients');
   };
   const handleClick2 = (): void => {
     setTab('process');
   };
+
+  // const ingredients = object?.ingredients;
+  // const measurements = object?.measuremets;
+  // const real = [];
+  // real.push({ ingredients: ingredients, measurements: measurements });
+  if (loading) {
+    return (
+      <View style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#aaa" />
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View>
+        <Text>ERROR:{error.message}</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <View
@@ -55,7 +109,7 @@ const Page: React.FC = () => {
             height: 200,
           }}
           source={{
-            uri: `${object.imageUrl}`,
+            uri: `${data?.getRecipe?.image}`,
           }}>
           <LinearGradient
             colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.2)', 'transparent']}
@@ -75,10 +129,10 @@ const Page: React.FC = () => {
               justifyContent: 'space-between',
               alignContent: 'center',
             }}>
-            <View>
+            {/* <View>
               <Clock />
-            </View>
-            <Text style={{ color: '#D9D9D9' }}>{object.cookTime + 'min'}</Text>
+            </View> */}
+            <Text style={{ color: '#D9D9D9' }}>{data?.getRecipe?.areas}</Text>
             <View
               style={{
                 borderColor: 'none',
@@ -103,7 +157,7 @@ const Page: React.FC = () => {
               fontSize: 25,
               width: 400,
             }}>
-            {object.name}
+            {data?.getRecipe?.title}
           </Text>
         </View>
         <View
@@ -143,7 +197,7 @@ const Page: React.FC = () => {
         {tab === 'ingredients' && (
           <View style={{ marginTop: 20 }}>
             <FlatList
-              data={ingredients}
+              data={data?.getRecipe?.ingredients}
               renderItem={({ item: ingredient }) => (
                 <View
                   style={{
@@ -166,10 +220,7 @@ const Page: React.FC = () => {
                     <Text style={{ color: '#121212', fontSize: 18, fontWeight: 'bold' }}>
                       {ingredient.name}
                     </Text>
-                    <Text style={{ color: '#A9A9A9' }}>
-                      {ingredient.quantity}
-                      {ingredient.unit}
-                    </Text>
+                    <Text style={{ color: '#A9A9A9' }}>{ingredient.measure}</Text>
                   </View>
                 </View>
               )}
@@ -178,34 +229,29 @@ const Page: React.FC = () => {
         )}
         {tab === 'process' && (
           <View style={{ marginTop: 20 }}>
-            <FlatList
-              data={instructions}
-              renderItem={({ item: instruction }) => (
-                <View
-                  style={{
-                    width: 380,
-                    display: 'flex',
-                    alignItems: 'center',
-                    borderRadius: 10,
-                    backgroundColor: '#D9D9D9',
-                    marginVertical: 7,
-                  }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      width: 370,
-                    }}>
-                    <Text
+            <View
+              style={{
+                width: 380,
+                display: 'flex',
+                alignItems: 'center',
+                borderRadius: 10,
+                backgroundColor: '#D9D9D9',
+                marginVertical: 7,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  width: 370,
+                }}>
+                {/* <Text
                       style={{ color: '#121212', fontSize: 18, fontWeight: 'bold', height: 40 }}>
-                      {'Step' + ' ' + instruction.number}
-                    </Text>
-                    <Text style={{ color: '#A9A9A9', fontSize: 18 }}>
-                      {instruction.instruction}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            />
+                      {'Step' + ' ' + Instruction}
+                    </Text> */}
+                <ScrollView style={{}}>
+                  <Text style={{ fontSize: 18 }}>{data?.getRecipe?.instructions}</Text>
+                </ScrollView>
+              </View>
+            </View>
           </View>
         )}
       </View>

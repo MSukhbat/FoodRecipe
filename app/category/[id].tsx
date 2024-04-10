@@ -1,19 +1,16 @@
+import { useGetRecipesQuery } from '@/graphql/generated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGlobalSearchParams } from 'expo-router';
 
-import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, ImageBackground } from 'react-native';
 
 const CategoryScreen: React.FC = () => {
   const { id } = useGlobalSearchParams();
-  const [data, setData] = useState();
-  useEffect(() => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${id}`)
-      .then((res) => res.json())
-      .then(({ meals }) => {
-        setData(meals);
-      });
-  }, []);
+  const { data } = useGetRecipesQuery();
+  console.log(id);
+
+  const realData = data?.getRecipes?.filter((e) => e?.category === id);
+  console.log(realData);
   return (
     <View style={styles.container}>
       <View
@@ -26,7 +23,7 @@ const CategoryScreen: React.FC = () => {
         <FlatList
           // style={{ margin: 5, gap: 10, width: '100%' }}
           numColumns={2}
-          data={data}
+          data={realData}
           renderItem={({ item: data }) => (
             <View style={{ width: 200, display: 'flex', paddingBottom: 20 }}>
               <Pressable
@@ -43,7 +40,7 @@ const CategoryScreen: React.FC = () => {
                     borderBottomRightRadius: 20,
                   }}
                   source={{
-                    uri: `${data.strMealThumb}`,
+                    uri: `${data?.image}`,
                   }}>
                   <LinearGradient
                     colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.2)', 'transparent']}
@@ -54,7 +51,7 @@ const CategoryScreen: React.FC = () => {
 
                   <View style={{ position: 'absolute', bottom: 8, left: 16 }}>
                     <Text style={{ fontWeight: 'bold', fontSize: 15, color: 'white', width: 100 }}>
-                      {data.strMeal}
+                      {data?.title}
                     </Text>
                     {/* <Text style={{ color: '#DEDEDE' }}>By Christopper</Text> */}
                   </View>

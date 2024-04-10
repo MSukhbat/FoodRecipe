@@ -11,13 +11,20 @@
     "lint": "eslint .",
     "commit": "cz",
     "commit-all": "git add . && cz",
-    "prepare": "husky"
+    "prepare": "husky",
+    "codegen": "bunx graphql-code-generator --config ./graphql/codegen.ts"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.10",
+    "@apollo/server": "^4.10.2",
+    "@babel/plugin-transform-class-properties": "^7.24.1",
     "@expo/vector-icons": "^14.0.0",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.0",
+    "@graphql-codegen/typescript-resolvers": "^4.0.6",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/native": "^6.0.2",
     "expo": "~50.0.7",
@@ -29,6 +36,7 @@
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "~2.9.3",
     "expo-web-browser": "~12.8.2",
+    "graphql": "^16.8.1",
     "next-router": "^1.3.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
