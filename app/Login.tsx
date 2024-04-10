@@ -133,12 +133,17 @@ import { View, Text, TextInput, StyleSheet, Pressable, Image } from 'react-nativ
 
 import SignUp from './SignUp';
 
+import { useUserLoginMutation } from '@/graphql/generated';
 import { useWelcomed } from '@/service/useWelcomed';
-const Login: React.FC = () => {
+const Login: React.FC<{ email: string }> = (props) => {
+  const { email } = props;
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const inputs = useRef<TextInput[]>([]);
   const { changeWelcomed } = useWelcomed();
   const [isClickedSignUp, setIsClickedSignUp] = useState(false);
+  const [Login, { loading, error }] = useUserLoginMutation();
+
+  const [combinedCode, setCombinedCode] = useState('');
 
   const handleClick = (): void => {
     setIsClickedSignUp(true);
@@ -151,16 +156,48 @@ const Login: React.FC = () => {
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
-    if (text.length === 1 && index < 6) {
+    const newCombinedCode = newCode.join('');
+    setCombinedCode(newCombinedCode);
+    if (text.length === 1 && index < 5) {
       inputs.current[index + 1].focus();
     }
   };
-
+  console.log(email);
   const handleVerify = (): void => {
-    changeWelcomed(true);
-    console.log('Verify', code);
-  };
+    if (email) {
+      Login({
+        variables: {
+          input: {
+            email,
+            otp: combinedCode,
+          },
+        },
+        onCompleted: (data) => {
+          console.log(data);
+        },
+        onError: (error) => {
+          console.error('Error fetching more data:', error);
+        },
+      });
+    }
 
+    changeWelcomed(true);
+    console.log('Verify');
+  };
+  if (error) {
+    return (
+      <View>
+        <Text>ERROR:{error.message}</Text>
+      </View>
+    );
+  }
+  if (loading) {
+    return (
+      <View>
+        <Text>...loading</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Verification</Text>

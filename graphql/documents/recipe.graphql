@@ -1,0 +1,104 @@
+query GetRecipe($getRecipeId: ID!) {
+  getRecipe(id: $getRecipeId) {
+    id
+    title
+    image
+    category
+    areas
+    instructions
+    youtube
+    ingredients {
+      id
+      name
+      measure
+    }
+  }
+}
+query GetRecipeByName($input: Search!) {
+  getRecipeByName(input: $input) {
+    id
+    title
+    image
+    category
+    areas
+    instructions
+    youtube
+    ingredients {
+      id
+      name
+      measure
+    }
+  }
+}
+query GetRecipes($page: Int, $pageSize: Int) {
+  getRecipes(page: $page, pageSize: $pageSize) {
+    id
+    title
+    image
+    category
+    areas
+    instructions
+    youtube
+    ingredients {
+      id
+      name
+      measure
+    }
+  }
+}
+query GetRecipesByIngredient($input: Seachingredient!, $page: Int, $pageSize: Int) {
+  getRecipesByIngredient(input: $input, page: $page, pageSize: $pageSize) {
+    id
+    title
+    image
+    category
+    areas
+    instructions
+    youtube
+    ingredients {
+      id
+      name
+      measure
+    }
+  }
+}
+query GetRecipesByLetter($input: SearchLetter!, $page: Int, $pageSize: Int) {
+  getRecipesByLetter(input: $input, page: $page, pageSize: $pageSize) {
+    id
+    title
+    image
+    category
+    areas
+    instructions
+    youtube
+    ingredients {
+      id
+      name
+      measure
+    }
+  }
+}
+query GetUser($getUserId: ID!) {
+  getUser(id: $getUserId) {
+    id
+    email
+    password
+    image
+    username
+  }
+}
+query GetUsers {
+  getUsers {
+    id
+    email
+    password
+    image
+    username
+  }
+}
+mutation RequestLoginOTP($email: String!) {
+  requestLoginOTP(email: $email)
+}
+mutation userLogin($input: UserLoginInput) {
+  userLogin(input: $input)
+}

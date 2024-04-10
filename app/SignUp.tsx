@@ -3,13 +3,36 @@ import { View, Text, TextInput, Pressable } from 'react-native';
 
 import Login from './Login';
 import Login1 from '../icons/other/logo-icon';
+
+import { useRequestLoginOtpMutation } from '@/graphql/generated';
 const SignUp: React.FC = (props) => {
   const [isClickedLog, setIsClickedLog] = useState(false);
-  const handleClick = (): void => {
+  const [SignUp, { loading, error }] = useRequestLoginOtpMutation();
+  const [email, setEmail] = useState('');
+  const handleClick = async () => {
+    SignUp({
+      variables: {
+        email,
+      },
+    });
     setIsClickedLog(true);
   };
   if (isClickedLog) {
-    return <Login />;
+    return <Login email={email} />;
+  }
+  if (error) {
+    return (
+      <View>
+        <Text>ERROR:{error.message}</Text>
+      </View>
+    );
+  }
+  if (loading) {
+    return (
+      <View>
+        <Text>...loading</Text>
+      </View>
+    );
   }
 
   return (
@@ -55,6 +78,7 @@ const SignUp: React.FC = (props) => {
                 borderColor: '#D9D9D9',
               }}
               placeholder="Enter your email address"
+              onChangeText={(template: string) => setEmail(template)}
             />
           </View>
         </View>

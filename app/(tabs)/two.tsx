@@ -1,7 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, View, Pressable, ImageBackground } from 'react-native';
 
-import Clock from '@/icons/other/clock-icon';
 import Icon from '@/icons/other/saved-icon';
 
 export default function TabTwoScreen(): React.ReactNode {
@@ -50,7 +49,6 @@ export default function TabTwoScreen(): React.ReactNode {
 
             <View style={{ position: 'absolute', bottom: 8, left: 16 }}>
               <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>Food name</Text>
-              <Text style={{ color: '#DEDEDE' }}>By Christopper</Text>
             </View>
             <View
               style={{
@@ -64,10 +62,6 @@ export default function TabTwoScreen(): React.ReactNode {
                 justifyContent: 'space-between',
                 alignContent: 'center',
               }}>
-              <View>
-                <Clock />
-              </View>
-              <Text style={{ color: '#D9D9D9' }}>20min</Text>
               <View
                 style={{
                   borderColor: 'none',
